@@ -18,22 +18,22 @@ int is_eof() {
  * @param offset
  * @returns Character at (position + offset)
  */
-char* peek(int offset) {
+char peek(int offset) {
     int pos = position + offset;
 
-    if (pos < 0 || pos >= input_len) return "\0";
+    if (pos < 0 || pos >= input_len) return '\0';
 
-    return &input[pos];
+    return input[pos];
 };
 
 /**
  * Advances position
  * @returns Character at new position
  */
-char* advance() {
-    if (is_eof() || (position + 1) > input_len) return "\0";
+char advance() {
+    if (is_eof() || (position + 1) > input_len) return '\0';
 
-    return &input[position++];
+    return input[position++];
 };
 
 /**
@@ -46,7 +46,9 @@ void Tokenize(char *data) {
     memcpy(input, data, input_len + 1);
     position = 0;
 
-    printf("%s", input);
+    printf("\nFull Input: %s", input);
+    printf("\nPeek(0): %c", peek(0));
+    printf("\nAdvance(): %c", advance());
 
     // Free memory allocated once we are done
     free(input);
