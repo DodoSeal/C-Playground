@@ -2,7 +2,7 @@
 #include "tokenizer/tokenizer.h"
 
 int main() {
-    Tokenize("const value = 1;");
+    Tokenize("// Comment Value Yay!");
 
     return 0;
 };

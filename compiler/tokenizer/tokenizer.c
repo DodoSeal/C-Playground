@@ -3,6 +3,8 @@
 #include <string.h>
 #include <regex.h>
 
+#include "../types/Token.h"
+
 int position = 0;
 int line = 0;
 int column = 0;
@@ -121,26 +123,45 @@ void skip_whitespace() {
 };
 
 // TODO: Make this return a Token
-void read_next() {
+Token read_next() {
     skip_whitespace();
 
     // TODO: Make EOF Token
-    // if (is_eof()) return;
+    if (is_eof()) {
+        Token eof_token = { TOKEN_EOF, "", line, column };
+        return eof_token;
+    };
 
     char current = peek(0);
     char next = peek(1);
 
-    if (current == "/" && next == "/") {
+    if (current == '/' && next == '/') {
         advance();
         advance();
 
-        if (peek(0) == " ") advance();
+        if (peek(0) == ' ') advance();
 
-        // TODO: Handle comment tokens
-        // return;
+        size_t comment_cap = 64;
+        size_t comment_len = 0;
+        char *comment_value = malloc(comment_cap);
+        
+        while (!is_eof() && peek(0) != '\n' && peek(0) != '\0') {
+            if (comment_len + 1 >= comment_cap) {
+                comment_cap *= 2;
+
+                char *temp = realloc(comment_value, comment_cap);
+                comment_value = temp;
+            };
+
+            comment_value[comment_len++] = advance();
+        };
+
+        comment_value[comment_len] = '\0';
+
+        Token comment_token = { TOKEN_COMMENT, comment_value, line, column };
+
+        return comment_token;
     };
-
-    
 };
 
 /**
@@ -153,9 +174,25 @@ void Tokenize(char *data) {
     memcpy(input, data, input_len + 1);
     position = 0;
 
-    printf("\nFull Input: %s", input);
-    printf("\nPeek(0): %c", peek(0));
-    printf("\nAdvance(): %c", advance());
+    size_t token_cap = 64, token_len = 0;
+    Token *tokens = malloc(token_cap * sizeof(Token));
+
+    while (!is_eof()) {
+        Token next_token = read_next();
+
+        if (token_len + 1 >= token_cap) {
+            token_cap *= 2;
+            tokens = realloc(tokens, token_cap * sizeof(Token));
+        };
+        tokens[token_len++] = next_token;
+        if (next_token.type == TOKEN_EOF) break;
+
+        printf("\nTOKEN:\nTYPE: %d\nVALUE: %s\n", next_token.type, next_token.value);
+    };
+
+    // printf("\nFull Input: %s", input);
+    // printf("\nPeek(0): %c", peek(0));
+    // printf("\nAdvance(): %c", advance());
 
     // Free memory allocated once we are done
     free(input);
