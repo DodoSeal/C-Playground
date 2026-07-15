@@ -35,7 +35,6 @@ int determine_winner(char *player_choice, char *bot_choice) {
  * Returns a random integer between 1-3
  */
 int make_bot_choice() {
-    srand(time(NULL));
     int random_number = rand() % (3 - 1 + 1) + 1;
 
     return random_number;
@@ -128,6 +127,7 @@ int main() {
     char player_choice[9];
     char bot_choice[9];
 
+    srand(time(NULL));
     print_game_info();
     reset_choices(player_choice, bot_choice);
     prompt_player_choice(player_choice, sizeof(player_choice), bot_choice);
