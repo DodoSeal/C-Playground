@@ -1,0 +1,22 @@
+// {
+//     "version": "2.0.0",
+//     "tasks": [
+//         {
+//             "label": "Compile and Run",
+//             "type": "shell",
+//             "command": "gcc compiler/*.c -o compiler/out/main",
+//             "group": {
+//                 "kind": "build",
+//                 "isDefault": true
+//             },
+//             "presentation": {
+//                 "echo": true,
+//                 "reveal": "always",
+//                 "focus": false,
+//                 "panel": "shared",
+//                 "showReuseMessage": false,
+//                 "clear": true
+//             }
+//         }
+//     ]
+// }
