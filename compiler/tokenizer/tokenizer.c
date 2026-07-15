@@ -167,7 +167,7 @@ Token read_next() {
 /**
  * @param data Source code
  */
-void Tokenize(char *data) {
+Token *Tokenize(char *data) {
     input_len = strlen(data);
     input = malloc(input_len + 1);
 
@@ -190,10 +190,8 @@ void Tokenize(char *data) {
         printf("\nTOKEN:\nTYPE: %d\nVALUE: %s\n", next_token.type, next_token.value);
     };
 
-    // printf("\nFull Input: %s", input);
-    // printf("\nPeek(0): %c", peek(0));
-    // printf("\nAdvance(): %c", advance());
-
     // Free memory allocated once we are done
     free(input);
+
+    return tokens;
 };
